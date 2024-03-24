@@ -10,7 +10,7 @@ body {
     background-position: center;
 }
 
-.login-box {
+.register-box {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -21,21 +21,21 @@ body {
     box-sizing: border-box;
     box-shadow: 0 15px 25px rgba(0,0,0,.6);
     border-radius: 10px;
-}
-
-.login-box h2 {
-    margin: 0 0 30px;
-    padding: 0;
     color: #ff7a00;
-    text-align: center;
     font-family: emoji;
 }
 
-.login-box .user-box {
+.register-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    text-align: center;
+}
+
+.register-box .user-box {
     position: relative;
 }
 
-.login-box .user-box input {
+.register-box .user-box input {
     width: 100%;
     padding: 10px 0;
     color: #ff7a00;
@@ -47,7 +47,7 @@ body {
     font-family: emoji;
 }
 
-.login-box .user-box label {
+.register-box .user-box label {
     position: absolute;
     top:0;
     left: 0;
@@ -57,16 +57,19 @@ body {
     transition: .5s;
 }
 
-.login-box .user-box input:focus ~ label,
-.login-box .user-box input:valid ~ label {
+.register-box .user-box input:focus ~ label,
+.register-box .user-box input:valid ~ label {
     top: -20px;
     left: 0;
     color: #ff7a00;
-    font-family: emoji;
 }
 
+.register-box .error {
+    color: red;
+    font-size: 14px;
+}
 
-.login-button {
+.register-box input[type="submit"] {
     background-color: #ff7a00;
     color: #000;
     border: none;
@@ -76,6 +79,6 @@ body {
     font-family: emoji;
     text-decoration: none;
     display: inline-block;
-    margin-right: 10px;
+    margin-top: 20px;
     font-size: 16px;
 }

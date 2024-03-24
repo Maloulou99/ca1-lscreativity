@@ -1,9 +1,20 @@
 <?php
 session_start();
 
-// Placeholder for user existence check (replace with actual database check)
-$user_exists = true; // Assuming user exists for now
+$errors = [];
 
+// Define database connection parameters
+define('DB_SERVER', 'mysql');
+define('DB_USER', 'pw2user');
+define('DB_PASSWORD', 'pw2pass');
+define('DB_DATABASE', 'PW2_project_db');
+
+// Create a new mysqli connection
+$conn = new mysqli(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if email and password are submitted
@@ -11,26 +22,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["email"];
         $password = $_POST["password"];
 
-        $errors = array();
+        // Prepare SQL statement with parameterized query
+        $sql = "SELECT * FROM Users WHERE email = ? AND password = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $email, $password); // Assuming password is stored as plain text
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        // Validate email and password (assuming functions validate_email and validate_password are defined)
-
-        // If there are no validation errors and user exists
-        if (empty($errors) && $user_exists) {
-            // Log user in and redirect to search page
+        if ($result->num_rows > 0) {
+            // User exists, log user in
             $_SESSION['user'] = $email; // Store user in session (you can store other user info as needed)
-            // Output log message to console
-            echo "<script>console.log('User with email $email is logged in and being redirected to search.php');</script>";
             // Redirect to search page after successful login
             header("Location: search.php");
             exit();
+            // Output log message to console
+            echo "<script>console.log('User with email $email is logged in.');</script>";
         } else {
-            // User does not exist or validation errors, show error
+            // Incorrect email or password
             $errors["form"] = "Incorrect email or password.";
         }
+
+        $stmt->close();
     }
 }
+
+
+// Close connection
+$conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,8 +74,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <span style="color: red;"><?php echo isset($errors["form"]) ? $errors["form"] : ''; ?></span>
         <br>
-        <input type="submit" value="Login" class="login-button">
+        <div class="button-container">
+            <input type="submit" value="Login" class="login-button">
+            <a href="register.php" class="login-button">Register</a>
+        </div>
     </form>
 </div>
+
 </body>
 </html>

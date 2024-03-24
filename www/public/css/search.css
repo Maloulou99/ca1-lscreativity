@@ -1,134 +1,126 @@
-body{
-// Symulating the wrapping container to show the flexibility.
-height: 100vh
-position: relative
+body {
+    height: 100vh;
+    position: relative;
+    background: url("../image/1347727.png");
+    margin: 0; /* Remove default margin */
 }
 
-.library{
-    background-color: aliceblue;
-    height: 100%;
+button{
+    background-color: #dddddd;
+    color: #0d131e;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: emoji;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    color: black !important;
+    font-family: emoji !important;
+    background-color: rgba(170, 170, 170, 0.5);
+}
+
+.sidebar__keywords .sidenav-link span {
+    color: black;
+    margin-top: auto;
+    padding-bottom: 20px;
+}
+
+.sidebar__keywords .sidenav-menu {
+    list-style: none;
+    padding: 0;
+    background-color: rgba(170, 170, 170, 0.5);
+}
+
+.sidebar__keywords .sidenav-item {
+    margin-bottom: 5px;
+}
+
+.sidebar__keywords .sidenav-link {
+    font-size: 0.8em;
+    text-decoration: none;
+}
+
+.sidebar__keywords .sidenav-link:hover {
+    text-decoration: underline;
+}
+
+
+h2{
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 0.8em;
+}
+
+.library {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    margin-left: 300px;
 }
 
-.library__header{
+.library__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    background-color: lightgray;
-}
-
-.library__main{
-    flex-grow: 1;
-    display: flex;
-    align-items: stretch;
-}
-
-.library__list-container{
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-.library__filters{
-    padding: 20px 0 20px 20px
-}
-
-.library__search{
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    margin-bottom: 10px;
-}
-
-.library__search-label{
-    margin-right: 10px;
-}
-.library__search-input{
-    flex-grow: 1
-}
-
-.library__search-btn{
-    margin-left: 20px
-}
-
-.library__selects{
-    display: flex;
-    margin-right: -10px;
-}
-
-.library__select {
-    min-width: calc(33.33% - 10px);
-    max-width: 100%;
-    margin-right: 10px
+    justify-content: center;
+    padding: 20px;
 }
 
 .library__list {
-    flex-grow: 1;
-    background-color: black;
-    overflow-y: scroll;
+    overflow-y: scroll; /* Keep the scroll functionality */
+    height: calc(100vh - 0px); /* Subtracting header height (20px padding top and bottom) */
     display: flex;
     flex-wrap: wrap;
-    align-content: flex-start
+    align-content: flex-start;
+    background-color: rgba(170, 170, 170, 0.5);
+    padding: 10px;
 }
 
 .library__list-item {
     padding: 10px;
-    max-width: 150px;
-    min-width: 150px;
+    width: 150px;
+    /* Adjusting height to make space for the image and description */
+    height: 250px;
     text-decoration: none;
-    background-color: deepskyblue;
-    cursor: pointer
-}
-
-.library__list-item-img-wrapper {
-    width: 100%;
-    height: 150px;
-    background-color: darkgray;
-    box-sizing: border-box;
-    padding: 5px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    margin-bottom: 5px
-}
-
-.library__list-item-img {
-    width: 100%;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    color: lightgray
-}
-.library--sidebar {
-    min-width: 300px;
-    max-width: 300px;
-    padding: 20px 20px 0;
+    cursor: pointer;
+    margin: 5px;
     display: flex;
     flex-direction: column;
-    text-align: right;
-    margin: -15px 0 5px;
-    line-height: 60px;
-    z-index: 10
-}
-
-
-.library--keywords-label {
-    font-weight: bold;
-    display: inline-block;
-    padding: 3px 5px;
-    margin-bottom: 5px;
-    margin-right: 3px;
-    border-radius: 4px;
-    background-color: deepskyblue;
-    cursor: pointer
-}
-.library--meta-item {
-    margin-top: 5px;
-    font-weight: bold;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
+}
+
+.library__list-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.library__list-item p {
+    margin: 5px 0;
+    text-align: center;
+}
+
+.sidebar__search {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    color: #0d131e;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: emoji;
+    background-color: rgba(170, 170, 170, 0.5);
 }
