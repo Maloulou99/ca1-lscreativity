@@ -27,7 +27,20 @@ function validate_email($email) {
 function validate_password($password, $confirm_password){
     $password = trim($password);
     $confirm_password = trim($confirm_password);
-    return $password === $confirm_password;
+
+    // Check if password contains at least one number, one capital letter, and is longer than or equal to 9 characters
+    return preg_match('/^(?=.*\d)(?=.*[A-Z]).{9,}$/', $password) && $password === $confirm_password;
+}
+
+// Function to check if email already exists
+function email_exists($email, $conn) {
+    $sql = "SELECT COUNT(*) AS count FROM Users WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['count'] > 0;
 }
 
 // Check if the form is submitted
@@ -43,9 +56,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $errors["email"] = "Enter a valid email address.";
         }
 
+        // Check if email already exists
+        if (email_exists($email, $conn)) {
+            $errors["email_exists"] = "Email already exists.";
+        }
+
         // Validate password
         if (!validate_password($password, $confirm_password)) {
-            $errors["password"] = "Passwords do not match.";
+            $errors["password"] = "Password must contain at least one number, one capital letter, and be longer than or equal to 9 characters.";
         }
 
         // If no errors, proceed with user creation
@@ -89,8 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Close database connection
 $conn->close();
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,22 +119,37 @@ $conn->close();
 <div class="register-box">
     <h2>Register</h2>
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <!-- Error message for email -->
+        <span class="error"><?php echo isset($errors["email"]) ? $errors["email"] : ''; ?></span>
+        <span class="error"><?php echo isset($errors["email_exists"]) ? $errors["email_exists"] : ''; ?></span>
+
         <div class="user-box">
+            <!-- Move the email input here -->
             <input type="text" id="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
             <label for="email">Email</label>
-            <span class="error"><?php echo isset($errors["email"]) ? $errors["email"] : ''; ?></span>
         </div>
+
+        <!-- Error message for password -->
+        <span class="error"><?php echo isset($errors["password"]) ? $errors["password"] : ''; ?></span>
+
         <div class="user-box">
+            <!-- Move the password input here -->
             <input type="password" id="password" name="password">
             <label for="password">Password</label>
-            <span class="error"><?php echo isset($errors["password"]) ? $errors["password"] : ''; ?></span>
         </div>
+
+        <!-- Error message for confirm password -->
+        <span class="error"><?php echo isset($errors["confirm_password"]) ? $errors["confirm_password"] : ''; ?></span>
+
         <div class="user-box">
+            <!-- Move the confirm password input here -->
             <input type="password" id="confirm_password" name="confirm_password">
             <label for="confirm_password">Confirm Password</label>
-            <span class="error"><?php echo isset($errors["confirm_password"]) ? $errors["confirm_password"] : ''; ?></span>
         </div>
+
         <input type="submit" value="Register">
+        <a href="http://localhost:8080/index.php" class="login-button register-button">Back</a>
+        <!-- Error message for database -->
         <span class="error"><?php echo isset($errors["database"]) ? $errors["database"] : ''; ?></span>
     </form>
 </div>
